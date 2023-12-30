@@ -62,12 +62,13 @@ class MainActivity : AppCompatActivity() {
                         upInfoList.removeAt(index)
                         upInfoAdapter.notifyDataSetChanged()
                     }
-                } else {
-                    if (upInfo != null) {
-                        upInfoList.add(upInfo)
-                        upInfoAdapter.notifyDataSetChanged()
-                    }
                 }
+//                else {
+//                    if (upInfo != null) {
+//                        upInfoList.add(upInfo)
+//                        upInfoAdapter.notifyDataSetChanged()
+//                    }
+//                }
             }
         }
 
