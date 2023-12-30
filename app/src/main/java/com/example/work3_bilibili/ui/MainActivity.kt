@@ -5,6 +5,8 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.example.work3_bilibili.R
@@ -14,11 +16,13 @@ import com.example.work3_bilibili.data.DataSender
 import com.example.work3_bilibili.data.UpInfo
 import com.example.work3_bilibili.databinding.ActivityMainBinding
 
+@Suppress("DEPRECATION")
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var upInfoList: MutableList<UpInfo>
 
     private lateinit var upInfoAdapter: UpInfoAdapter
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,14 +35,14 @@ class MainActivity : AppCompatActivity() {
 
 
         upInfoAdapter = UpInfoAdapter(upInfoList) { position ->
-            val viewPager: ViewPager2 = findViewById(R.id.activityViewpager)
+            val viewPager: ViewPager2 = binding.activityViewpager
             viewPager.setCurrentItem(position, true)
         }
 
         val recyclerView: RecyclerView = binding.upList
         recyclerView.adapter = upInfoAdapter
 
-        val viewPager: ViewPager2 = findViewById(R.id.activityViewpager)
+        val viewPager: ViewPager2 = binding.activityViewpager
         viewPager.adapter = DynamicInfoAdapter(upInfoList)
     }
 
@@ -49,12 +53,11 @@ class MainActivity : AppCompatActivity() {
 
         if (requestCode == 1) {
             if (resultCode == Activity.RESULT_OK) {
-                val unfollowStatus = data?.getBooleanExtra("unfollowStatus", false)
+                val unfollowStatus = data?.getBooleanExtra("unfollowStatus",false)
                 val upInfo: UpInfo? = data?.getParcelableExtra("upInfo")
                 if (unfollowStatus == true) {
                     // 根据 upInfo 对象从 upInfoList 中删除对应的条目
                     val index = upInfoList.indexOfFirst { it.name == upInfo?.name }
-                    Log.d("d", index.toString())
                     if (index != -1) {
                         upInfoList.removeAt(index)
                         upInfoAdapter.notifyDataSetChanged()
@@ -69,11 +72,11 @@ class MainActivity : AppCompatActivity() {
         }
 
         //通知适配器数据已更改
-        val recyclerView: RecyclerView = binding.upList
-        recyclerView.adapter = upInfoAdapter
-        recyclerView.adapter?.notifyDataSetChanged()
-        val viewPager: ViewPager2 = findViewById(R.id.activityViewpager)
-        viewPager.adapter = DynamicInfoAdapter(upInfoList)
-        viewPager.adapter?.notifyDataSetChanged()
+//        val recyclerView: RecyclerView = binding.upList
+//        recyclerView.adapter = upInfoAdapter
+//        recyclerView.adapter?.notifyDataSetChanged()
+//        val viewPager: ViewPager2 = findViewById(R.id.activityViewpager)
+//        viewPager.adapter = DynamicInfoAdapter(upInfoList)
+//        viewPager.adapter?.notifyDataSetChanged()
     }
 }
